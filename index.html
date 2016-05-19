@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Maintainable CSS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3, h4 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .big {
+        font-size: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+
+# Maintainable CSS
+
+
+---
+
+
+# Agenda
+
+- What do maintainable and scaleble mean?
+- MindBEMding
+- Conventions
+- State
+- Modifiers
+
+
+---
+class: center, middle
+
+
+# What do maintainable and scaleble mean?
+
+
+---
+
+
+# maintainable
+
+- Readability
+
+  - Think the best class selectors
+  - Nested
+  - Cascade
+
+- Modules
+  - not be relate to other modules
+
+
+---
+
+## naming class selector
+
+#### Bad 👎
+
+```:css
+.searchList-item-red {
+  color: red;
+}
+```
+
+#### Good 👍
+
+```:css
+.searchList-item-attention {
+  color: red;
+}
+```
+
+???
+-redの意味は？
+
+background-color? color? border-color?
+
+極端な具体化は避ける。
+
+
+---
+
+
+## 抽象化と具体化
+
+- harukiMurakamiAmazonKindleList ❌
+- amazonKindleList
+- amazonList
+- bookList
+- shopItemList
+- itemList ❌
+- list ❌
+
+
+---
+
+
+# scalable
+
+- 修正コスト
+
+  - 追加コスト
+  - 削除コスト
+
+
+---
+
+
+## 追加コスト
+
+#### Bad 👎
+
+```scss
+.productionList p {
+  font-size: 14px;
+}
+```
+
+#### Good 👍
+
+```scss
+.productionList-description {
+  font-size: 14px;
+}
+```
+
+???
+
+影響範囲が広すぎる。
+
+別スタイルの要素を追加するときに修正コストが高い。
+
+
+---
+
+
+## 削除コスト
+
+#### Bad 👎
+
+```scss
+.producitonList-cartButton,
+.searchList-description {
+  font-size: 14px;
+  line-height: 1.4;
+}
+```
+
+#### Good 👍
+
+```scss
+%defaultText {
+  font-size: 14px;
+  line-height: 1.4;
+}
+.producitonList-cartButton {
+  @extend %defaultText;
+}
+.searchList-description {
+  @extend %defaultText;
+}
+```
+
+???
+
+スタイル変更時にクラスセレクターの連結を解消する必要がある。
+
+DRY CSS(Don't repeat your CSS)な記述方法はメンテナンス性が落ちる。
+
+別で記述をしておくか、Sassのplaceholderを使ってスタイルを継承する。
+
+
+---
+
+
+## What do maintainable and scaleble mean?
+
+CSS Selectorの極端な具体化は避ける。
+
+CSS Selectorは運用中にスケールするので具体化と抽象化をよく考えて決定する。
+
+プロパティの追加と削除が行われた際に、どの程度のコストが発生するか考える。
+
+
+---
+class: center, middle
+
+
+# MindBEMding
+
+
+---
+
+
+## MindBEMding
+
+BEMをベースにしたCSS classの命名規則。
+
+- B: Block
+- E: Element
+- M: Modifier
+
+
+---
+
+
+## BEM
+
+モスクワのIT会社Yandexが提案するフロントエンド開発のフレームワーク
+
+- [BEM](https://en.bem.info/)
+- [Key concepts / Methodology / BEM](https://en.bem.info/methodology/key-concepts/)
+- [History / Methodology / BEM](https://en.bem.info/methodology/history/)
+
+
+---
+
+
+## Naming Convention Pattern
+
+```scss
+.block {}
+.block__element {}
+.block--modifier {}
+```
+
+```scss
+.person {}
+.person__hand {}
+.person--female {}
+.person--female__hand {}
+.person__hand--left {}
+```
+
+
+---
+class: center, middle
+
+
+# Uuuuuuuuuugly 😱😱😱
+
+
+---
+
+
+## New aproach to writing CSS
+
+- [SuitCSS](http://suitcss.github.io/)
+- [MCSS](http://operatino.github.io/MCSS/ja/)
+- [FLOCSS](https://github.com/hiloki/flocss)
+- [ECSS (Enduring CSS)](http://ecss.io/)
+- [MaintainableCSS](http://maintainablecss.com/)
+
+
+???
+
+
+---
+class: center, middle
+
+
+# MaintainableCSS
+
+
+---
+
+
+## MaintainableCSS
+
+These guides are the result of building many different types of websites and have been influenced by many experiences and the many people I have worked with.
+
+With that said, I think it bares most resemblance to BEM and ECSS.
+
+[FAQs | MaintainableCSS](http://maintainablecss.com/chapters/faqs/#isnt-this-the-same-as-insert-methodology-here)
+
+
+???
+
+ロンドンのフロントエンドエンジニア、アダム・シルバーの考案したCSS設計。
+
+Webサイト構築の経験則からつくられたCSS設計思想。BEMやECSSがベースになっている。
+
+
+---
+class: center, middle
+
+
+I would say it’s very easy to learn. You can read the entire book in under 20 minutes and apply the rules in minutes.
+
+
+---
+
+## Conventions
+
+```scss
+.<moduleName>[-<componentName>][-<state>] {}
+```
+
+
+---
+
+
+
+    </textarea>
+    <script src="js/remark.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
