@@ -301,6 +301,224 @@ I would say it’s very easy to learn. You can read the entire book in under 20 
 
 
 ---
+class: center, middle
+
+
+# Semantics
+
+
+---
+
+
+## Semantics
+
+HTMLファイルのclassプロパティを見てすぐにスタイルが理解できるようにする。
+
+セマンティックなclassは理解がしやすく、HTMLファイル内から探し出すのも容易になる。
+
+text, button, linkなどのclass名を調べて機械的に作業をすることも可能になる。
+
+セマンティックではない便利クラス（mt10, tar）はデバッグの妨げになる。
+
+セマンティックなclass名をつけることはMaintainableCSSを書く上で重要なこと。
+
+
+---
+
+
+#### Bad 👎
+
+```html
+<div class="red pull-left">
+<div class="grid row">
+<div class="col-xs-4">
+```
+
+#### Good 👍
+
+```html
+<div class="header">
+<div class="basket">
+<div class="product">
+<div class="searchResults">
+```
+
+
+---
+
+
+## Semantics
+
+Media Queriesでclearfixが不要になる要素にclearfixクラスを指定しない。
+
+#### Bad 👎
+
+```html
+<div class="clearfix">
+  <div class="box1"></div>
+  <div class="box2"></div>
+</div>
+```
+
+```scss
+.box1, .box2 {
+  float: left;
+}
+@media (min-width:480px) {
+  .box1, .box2 {
+    float: none;
+  }
+}
+```
+
+
+---
+
+
+## Semantics
+
+sassのplaceholderをextendする。
+
+#### Good 👍
+
+```html
+<div class="itemBox">
+  <div class="box1"></div>
+  <div class="box2"></div>
+</div>
+```
+
+```scss
+%clearfix {}
+
+.itemBox {
+  @extend %clearfix
+}
+...etc
+```
+
+
+---
+class: center, middle
+
+
+# Reuse
+
+
+---
+
+
+## Reuse
+
+Classの再利用は避ける。
+
+Classの再利用はデバッグを複雑にし、メンテナンス性を落とす。
+
+Classを使い回すということは、セマンティックなクラス名をつけていないことと同義である。
+
+
+???
+
+いわゆる便利クラス、マルチクラスパターンと呼ばれているもの。
+
+
+---
+
+
+## Reuse
+
+#### Bad 👎
+
+```html
+<div class="grid">
+  <div class="col pd50 pd20 fs3 fs2">Column 1</div>
+  <div class="col pd50 pd20 fs3">Column 2</div>
+</div>
+```
+
+#### Good 👍
+
+```html
+<div class="someModule">
+  <div class="someModule-someComponent"></div>
+  <div class="someModule-someOtherComponent"></div>
+</div>
+```
+
+
+---
+
+
+## Reuse
+
+### mixin
+
+CSS preprocessorのmixinを使えば、スタイルの使い回しは容易になる。
+
+しかし、mixinもclass命名と同様に具体化と抽象化に注意を払うべきである。
+
+
+---
+
+
+## mixin
+
+#### Bad 👎
+
+```scss
+@mixin redText {
+  color: red;
+}
+```
+
+#### Good 👍
+
+```scss
+@mixin attentionText {
+  color: red;
+}
+```
+
+???
+
+具体化しすぎ。
+
+mixinのStyle修正時に@include redTextでgrepする必要がある。
+
+
+---
+
+
+## mixin
+
+ReuseやDRY CSS（Don't Repeat Your CSS）といった考え方はソフトエンジニアリングでは開發・運用コストを下げるための重要な考え方ではあるが、CSSでは悪手になる場面が多い。
+
+再利用性を重要視すればするほど、CSSのメンテナンス性は落ちていく。
+
+
+---
+class: center, middle
+
+
+# IDs
+
+
+---
+
+
+## IDs
+
+Don’t use IDs as hooks for styling.
+
+
+---
+class: center, middle
+
+
+# Conventions
+
+
+---
 
 ## Conventions
 
@@ -308,9 +526,269 @@ I would say it’s very easy to learn. You can read the entire book in under 20 
 .<moduleName>[-<componentName>][-<state>] {}
 ```
 
+#### examples 📘
+
+```scss
+/* module container/root */
+.searchResults {}
+
+/* components of a module */
+.searchResults-heading {}
+
+.searchResults-item {}
+
+/* state: such as AJAX loading */
+.searchResults-isLoading {}
+```
+
+
+---
+class: center, middle
+
+
+# Modules
+
 
 ---
 
+
+## Modules
+
+他のモジュールと一緒に使える、独立した構造。
+
+たとえば、リビングを構成するTV、ソファー、テーブルはモジュールに相当する。
+
+TVを取り除いても、ソファーに座ることはできる。
+
+Webサイトでいえば、ヘッダ、フッタ、検索フォーム、ショッピングカート、記事、製品リスト、ナビゲーションがモジュールに相当する。
+
+
+---
+
+
+## Component
+
+モジュールを構成する部品。
+
+コンポーネントがなくなると、モジュールが不完全になるか破壊される。
+
+たとえば、検索フォームモジュールの検索ボタンコンポーネントが削除されると、検索フォームモジュールは破壊される。
+
+ランキングモジュールから順位アイコンが削除されると、ランキングモジュールは不完全になる。
+
+
+---
+
+
+## Modules vs Components
+
+どの程度の粒度でモジュールとコンポーネントの定義を決定するか。
+
+Ultimately it doesn’t matter too much and you can use your own experience to decide.
+
+
+---
+class: center, middle
+
+
+# State
+
+
+---
+
+
+## State
+
+モジュールやコンポーネントの状態。
+
+たとえば、showing, hiding, active, inactive, disabled, loading, loadedなど。
+
+
+---
+
+
+## State
+
+isActiveクラスを定義すると、多くのモジュールでさまざまなStyleが定義されてしまう。
+
+サイト構造を理解していないエンジニアが.isActiveでStyleを定義するリスクもある。
+
+#### Bad 👎
+
+```html
+<div class="myModule isActive">
+```
+
+#### Good 👍
+
+```html
+<div class="myModule-isActive">
+```
+
+
+---
+
+
+## Applying state to components
+
+#### Bad 👎
+
+```html
+<div class="myModule myModule-isDisabled">
+    <p class="myModule-title">
+```
+
+#### Good 👍
+
+```html
+<div class="myModule myModule">
+    <p class="myModule-title-isDisabled">
+```
+
+
+---
+class: center, middle
+
+
+# Modifiers
+
+
+---
+
+
+## Modifiers
+
+Stateのように、モジュールのStyleを変更する。
+
+```html
+<!-- when viewing the "boys" category page -->
+<div class="categoryHeader categoryHeader-boys">
+
+<!-- when viewing the "girls" category page -->
+<div class="categoryHeader categoryHeader-girls">
+```
+
+```scss
+.categoryHeader {
+    /* etc */
+}
+
+.categoryHeader-boys {
+    background-image: url(/path/to/boys.jpg);
+}
+
+.categoryHeader-girls {
+    background-image: url(/path/to/girls.jpg);
+}
+```
+
+
+---
+
+
+## Modifiers
+
+Stateのように、モジュールのStyleを変更する。
+
+```html
+<!-- when viewing a product with a green colour applied -->
+<input class="addToBasketButton addToBasketButton-green">
+```
+
+```scss
+.addToBasketButton {
+    padding: 10px 30px;
+    text-align: center;
+    /* etc */
+}
+
+.addToBasketButton-green {
+    background-color: green;
+}
+```
+
+
+---
+class: center, middle
+
+
+# Versioning
+
+
+---
+
+
+## Versioning
+
+Webサイトの運用時に利用される。
+
+たとえば、A/Bテストやデザイン更新など。
+
+???
+
+SoftBankのリニューアル時にプレフィックスが追加されているのもこのVersioningに相当する。
+
+
+---
+class: center, middle
+
+
+# Javascript
+
+
+---
+
+
+## JavaScript
+
+JavaScriptにもMaintainableCSSを適応するのであれば、
+
+1. モジュールかコンポーネントにStateクラスを定義する
+2. Global State Classを定義する
+
+
+---
+
+
+## Encapsulating states to the module
+
+```js
+var module1Collasper = new Collapser(element1, {
+  cssHideClass: 'moduleA-isHidden'
+});
+
+var module2Collapser = new Collapser(element2, {
+  cssHideClass: 'moduleB-isHidden'
+});
+```
+
+```scss
+/* isHidden */
+.moduleA-isHidden,
+.moduleB-isHidden {
+  display: none;
+}
+```
+
+
+---
+
+
+## Creating global state class
+
+```scss
+.globalState-isHidden {
+  display: none;
+}
+```
+
+
+---
+class: center, middle
+
+
+# END
+## No Maintainance, No Life
 
 
     </textarea>
