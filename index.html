@@ -33,38 +33,36 @@ class: center, middle
 
 # Agenda
 
-- What do maintainable and scaleble mean?
+- Maintainable and scaleble
 - MindBEMding
-- Conventions
-- State
-- Modifiers
+- MaintainableCSS
 
 
 ---
 class: center, middle
 
 
-# What do maintainable and scaleble mean?
+# Maintainable and scaleble
 
 
 ---
 
 
-# maintainable
+# Maintainable
 
 - Readability
 
-  - Think the best class selectors
+  - Semantic class names
   - Nested
   - Cascade
 
 - Modules
-  - not be relate to other modules
+  - Not be related to other modules
 
 
 ---
 
-## naming class selector
+## Semantic class names
 
 #### Bad 👎
 
@@ -83,11 +81,12 @@ class: center, middle
 ```
 
 ???
+
 -redの意味は？
 
 background-color? color? border-color?
 
-極端な具体化は避ける。
+極端な具体化、抽象化は避ける。
 
 
 ---
@@ -107,7 +106,7 @@ background-color? color? border-color?
 ---
 
 
-# scalable
+# Scalable
 
 - 修正コスト
 
@@ -148,6 +147,8 @@ background-color? color? border-color?
 
 ## 削除コスト
 
+[DRY CSS(Don't repeat your CSS)](http://vanseodesign.com/css/dry-principles/)な記述方法はメンテナンス性が落ちる。
+
 #### Bad 👎
 
 ```scss
@@ -185,7 +186,7 @@ DRY CSS(Don't repeat your CSS)な記述方法はメンテナンス性が落ち�
 ---
 
 
-## What do maintainable and scaleble mean?
+## Maintainable and scalable
 
 CSS Selectorの極端な具体化は避ける。
 
@@ -255,7 +256,7 @@ class: center, middle
 ---
 
 
-## New aproach to writing CSS
+## Other aproach to writing CSS
 
 - [SuitCSS](http://suitcss.github.io/)
 - [MCSS](http://operatino.github.io/MCSS/ja/)
@@ -266,12 +267,24 @@ class: center, middle
 
 ???
 
+- SuitCSS: マルチクラスパターン
+- MCSS: マルチクラスパターン、ネスト（カスケーディング）許容
+- FLOCSS: BEM + OOCSS
+- ECSS: BEM + OOCSS。ディレクトリ構造、アクセシビリティにも言及。
+- MaintainableCSS: BEM
 
 ---
 class: center, middle
 
 
 # MaintainableCSS
+
+
+???
+
+ロンドンのフロントエンドエンジニア、アダム・シルバーの考案したCSS設計。
+
+Webサイト構築の経験則からつくられたCSS設計思想。BEMやECSSがベースになっている。
 
 
 ---
@@ -286,18 +299,11 @@ With that said, I think it bares most resemblance to BEM and ECSS.
 [FAQs | MaintainableCSS](http://maintainablecss.com/chapters/faqs/#isnt-this-the-same-as-insert-methodology-here)
 
 
-???
-
-ロンドンのフロントエンドエンジニア、アダム・シルバーの考案したCSS設計。
-
-Webサイト構築の経験則からつくられたCSS設計思想。BEMやECSSがベースになっている。
-
-
 ---
 class: center, middle
 
 
-I would say it’s very easy to learn. You can read the entire book in under 20 minutes and apply the rules in minutes.
+# I would say it’s very easy to learn. You can read the entire book in under 20 minutes and apply the rules in minutes.
 
 
 ---
@@ -326,6 +332,8 @@ text, button, linkなどのclass名を調べて機械的に作業をすること
 ---
 
 
+## Semantics
+
 #### Bad 👎
 
 ```html
@@ -349,7 +357,7 @@ text, button, linkなどのclass名を調べて機械的に作業をすること
 
 ## Semantics
 
-Media Queriesでclearfixが不要になる要素にclearfixクラスを指定しない。
+BreakPointでclearfixが不要になる要素にclearfixクラスを指定しない。
 
 #### Bad 👎
 
@@ -364,7 +372,7 @@ Media Queriesでclearfixが不要になる要素にclearfixクラスを指定し
 .box1, .box2 {
   float: left;
 }
-@media (min-width:480px) {
+@media (max-width:480px) {
   .box1, .box2 {
     float: none;
   }
@@ -396,6 +404,12 @@ sassのplaceholderをextendする。
 }
 ...etc
 ```
+
+
+---
+
+
+## Semantics
 
 
 ---
@@ -451,8 +465,6 @@ Classを使い回すということは、セマンティックなクラス名を
 
 ## Reuse
 
-### mixin
-
 CSS preprocessorのmixinを使えば、スタイルの使い回しは容易になる。
 
 しかし、mixinもclass命名と同様に具体化と抽象化に注意を払うべきである。
@@ -461,7 +473,7 @@ CSS preprocessorのmixinを使えば、スタイルの使い回しは容易に�
 ---
 
 
-## mixin
+## Reuse
 
 #### Bad 👎
 
@@ -489,7 +501,7 @@ mixinのStyle修正時に@include redTextでgrepする必要がある。
 ---
 
 
-## mixin
+## Reuse
 
 ReuseやDRY CSS（Don't Repeat Your CSS）といった考え方はソフトエンジニアリングでは開發・運用コストを下げるための重要な考え方ではあるが、CSSでは悪手になる場面が多い。
 
@@ -539,6 +551,10 @@ class: center, middle
 
 /* state: such as AJAX loading */
 .searchResults-isLoading {}
+
+/* state: such as error */
+.searchResults-isError {}
+
 ```
 
 
@@ -582,9 +598,9 @@ Webサイトでいえば、ヘッダ、フッタ、検索フォーム、ショ�
 
 ## Modules vs Components
 
-どの程度の粒度でモジュールとコンポーネントの定義を決定するか。
+どの粒度でモジュールとコンポーネントの定義を決定するか。
 
-Ultimately it doesn’t matter too much and you can use your own experience to decide.
+Ultimately it doesn’t matter too much and you can use **your own experience** to decide.
 
 
 ---
