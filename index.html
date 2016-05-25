@@ -860,10 +860,6 @@ Webサイトの運用時に利用される。
 
 たとえば、A/Bテストやデザイン更新など。
 
-???
-
-SoftBankのリニューアル時にプレフィックスが追加されているのもこのVersioningに相当する。
-
 
 ---
 
@@ -883,7 +879,7 @@ SoftBankのリニューアル時にプレフィックスが追加されている
 class: center, middle
 
 
-# Javascript
+# JavaScript
 
 
 ---
@@ -902,22 +898,18 @@ JavaScriptにもMaintainableCSSを適応するのであれば、
 
 ## Encapsulating states to the module
 
-```js
-var module1Collasper = new Collapser(element1, {
-  cssHideClass: 'moduleA-isHidden'
-});
-
-var module2Collapser = new Collapser(element2, {
-  cssHideClass: 'moduleB-isHidden'
-});
-```
 
 ```scss
 /* isHidden */
-.moduleA-isHidden,
-.moduleB-isHidden {
+.modalA-isHidden,
+.modalB-isHidden {
   display: none;
 }
+```
+
+```js
+document.getElementById('js-modalA').className = 'modalA-isHidden';
+document.getElementById('js-modalB').className = 'modalB-isHidden';
 ```
 
 
@@ -930,6 +922,11 @@ var module2Collapser = new Collapser(element2, {
 .globalState-isHidden {
   display: none;
 }
+```
+
+```js
+document.getElementById('js-modalA').className = 'globalState-isHidden';
+document.getElementById('js-modalB').className = 'globalState-isHidden';
 ```
 
 
@@ -945,7 +942,6 @@ class: center, middle
 
 
 # END
-## No Maintainance, No Life
 
 
     </textarea>
