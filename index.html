@@ -39,7 +39,7 @@ class: center, middle
 
 # Agenda
 
-- Maintainable and scaleble
+- Maintainable and scaleble CSS
 - MindBEMding
 - MaintainableCSS
 
@@ -48,13 +48,13 @@ class: center, middle
 class: center, middle
 
 
-# Maintainable and scaleble
+# Maintainable and scaleble CSS
 
 
 ---
 
 
-# Maintainable
+# Maintainable CSS
 
 - Readability
 
@@ -65,8 +65,6 @@ class: center, middle
 - Modules
 
   - Don't create modules related to other modules
-
-???
 
 
 ---
@@ -127,6 +125,11 @@ background-color? color? border-color?
     }
   }
 }
+.searchList {
+  .caption {
+    font-size: 10px;
+  }
+}
 ```
 
 #### Good 👍
@@ -134,6 +137,9 @@ background-color? color? border-color?
 ```:css
 .searchList-titleCaption {
   font-size: 14px;
+}
+.searchList-caption {
+  font-size: 10px;
 }
 ```
 
@@ -152,10 +158,9 @@ background-color? color? border-color?
 #### Bad 👎
 
 ```scss
-.searchList {
-  .title {
-    color: red;
-  }
+.title {
+  color: red;
+  font-size: 14px;
 }
 .title {
   color: blue;
@@ -165,6 +170,9 @@ background-color? color? border-color?
 #### Good 👍
 
 ```scss
+.title {
+  font-size: 14px;
+}
 .title-priority {
   color: red;
 }
@@ -211,13 +219,13 @@ background-color? color? border-color?
 class: center, middle
 
 
-# Scalable
+# Scalable CSS
 
 
 ---
 
 
-## Scalable
+## Scalable CSS
 
 - 修正コスト
 
@@ -297,9 +305,9 @@ DRY CSS(Don't repeat your CSS)な記述方法はメンテナンス性が落ち�
 ---
 
 
-## Maintainable and scalable
+## Maintainable and scalable CSS
 
-CSS Selectorの極端な具体化は避ける。
+CSS Selectorの極端な具体化/抽象化は避ける。
 
 運用中にスケールするのでCSS Selectorの具体化と抽象化をよく考えて決定する。
 
