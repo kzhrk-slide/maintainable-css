@@ -13,6 +13,12 @@
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
+      li {
+        margin-top: 10px;
+      }
+      li:first-child {
+        margin-top: 0;
+      }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
       .big {
         font-size: 150px;
@@ -57,7 +63,10 @@ class: center, middle
   - Cascade
 
 - Modules
-  - Not be related to other modules
+
+  - Don't create modules related to other modules
+
+???
 
 
 ---
@@ -66,7 +75,7 @@ class: center, middle
 
 #### Bad 👎
 
-```:css
+```:scss
 .searchList-item-red {
   color: red;
 }
@@ -74,7 +83,7 @@ class: center, middle
 
 #### Good 👍
 
-```:css
+```:scss
 .searchList-item-attention {
   color: red;
 }
@@ -106,7 +115,109 @@ background-color? color? border-color?
 ---
 
 
+## Nested
+
+#### Bad 👎
+
+```:scss
+.searchList {
+  .title {
+    .caption {
+      font-size: 14px;
+    }
+  }
+}
+```
+
+#### Good 👍
+
+```:css
+.searchList-titleCaption {
+  font-size: 14px;
+}
+```
+
+???
+
+ネストを多用するとセレクター間で複雑なプライオリティが形成されてしまう。
+
+運用上の問題がない場合は、ネストは極力使用しない。
+
+
+---
+
+
+## Cascade
+
+#### Bad 👎
+
+```scss
+.searchList {
+  .title {
+    color: red;
+  }
+}
+.title {
+  color: blue;
+}
+```
+
+#### Good 👍
+
+```scss
+.title-priority {
+  color: red;
+}
+.title-secondary {
+  color: blue;
+}
+```
+
+
+---
+
+
+## Modules
+
+#### Bad 👎
+
+```scss
+.searchList-title {
+  font-size: 20px;
+}
+.pager + .searchList-title {
+  font-size: 14px;
+}
+.shopInfo {
+  .searchList-title {
+    font-size: 32px;
+  }
+}
+```
+
+#### Good 👍
+
+```scss
+.searchList-title {
+  font-size: 20px;
+}
+.searchList-title-small {
+  font-size: 14px;
+}
+```
+
+
+---
+class: center, middle
+
+
 # Scalable
+
+
+---
+
+
+## Scalable
 
 - 修正コスト
 
@@ -190,7 +301,7 @@ DRY CSS(Don't repeat your CSS)な記述方法はメンテナンス性が落ち�
 
 CSS Selectorの極端な具体化は避ける。
 
-CSS Selectorは運用中にスケールするので具体化と抽象化をよく考えて決定する。
+運用中にスケールするのでCSS Selectorの具体化と抽象化をよく考えて決定する。
 
 プロパティの追加と削除が行われた際に、どの程度のコストが発生するか考える。
 
@@ -245,6 +356,13 @@ BEMをベースにしたCSS classの命名規則。
 .person__hand--left {}
 ```
 
+```scss
+.media {}
+.media__img {}
+.media__img--rev {}
+.media__body {}
+```
+
 
 ---
 class: center, middle
@@ -258,12 +376,12 @@ class: center, middle
 
 ## Other aproach to writing CSS
 
+- [SMACSS](https://smacss.com/)
 - [SuitCSS](http://suitcss.github.io/)
 - [MCSS](http://operatino.github.io/MCSS/ja/)
 - [FLOCSS](https://github.com/hiloki/flocss)
 - [ECSS (Enduring CSS)](http://ecss.io/)
 - [MaintainableCSS](http://maintainablecss.com/)
-
 
 ???
 
@@ -324,7 +442,7 @@ HTMLファイルのclassプロパティを見てすぐにスタイルが理解�
 
 text, button, linkなどのclass名を調べて機械的に作業をすることも可能になる。
 
-セマンティックではない便利クラス（mt10, tar）はデバッグの妨げになる。
+セマンティックではない便利クラス（mt10, tar）はデバッグの妨げになるから避ける。
 
 セマンティックなclass名をつけることはMaintainableCSSを書く上で重要なこと。
 
@@ -407,12 +525,6 @@ sassのplaceholderをextendする。
 
 
 ---
-
-
-## Semantics
-
-
----
 class: center, middle
 
 
@@ -467,7 +579,7 @@ Classを使い回すということは、セマンティックなクラス名を
 
 CSS preprocessorのmixinを使えば、スタイルの使い回しは容易になる。
 
-しかし、mixinもclass命名と同様に具体化と抽象化に注意を払うべきである。
+しかし、mixinもClass Selectorと同様、具体化/抽象化に注意を払うべきである。
 
 
 ---
@@ -503,7 +615,7 @@ mixinのStyle修正時に@include redTextでgrepする必要がある。
 
 ## Reuse
 
-ReuseやDRY CSS（Don't Repeat Your CSS）といった考え方はソフトエンジニアリングでは開發・運用コストを下げるための重要な考え方ではあるが、CSSでは悪手になる場面が多い。
+ReuseやDRY CSS（Don't Repeat Your CSS）といった考え方はソフトエンジニアリングでは開発・運用コストを下げるための重要な考え方ではあるが、CSSでは悪手になる場面が多い。
 
 再利用性を重要視すればするほど、CSSのメンテナンス性は落ちていく。
 
@@ -657,8 +769,8 @@ isActiveクラスを定義すると、多くのモジュールでさまざまな
 #### Good 👍
 
 ```html
-<div class="myModule myModule">
-    <p class="myModule-title-isDisabled">
+<div class="myModule">
+    <p class="myModule-title myModule-title-isDisabled">
 ```
 
 
@@ -746,6 +858,20 @@ SoftBankのリニューアル時にプレフィックスが追加されている
 
 
 ---
+
+
+## Versioning
+
+```scss
+/* existing module */
+.someModule {}
+
+/* new version of module */
+.someModuleVariant2 {}
+```
+
+
+---
 class: center, middle
 
 
@@ -797,6 +923,13 @@ var module2Collapser = new Collapser(element2, {
   display: none;
 }
 ```
+
+
+---
+class: center, middle
+
+
+# MaintainableCSSとは
 
 
 ---
